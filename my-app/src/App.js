@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import './App.css';
 import Person from './Person/Person';
+
+const StyledButton = styled.button`
+  color: white;
+  background-color: ${props => (props.alt) ? 'red' : 'green'};
+  font: inherit;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${props => (props.alt) ? 'salmon' : 'lightgreen'};
+    color: black;
+  }
+`;
 
 class App extends Component {
   state = {
@@ -45,15 +60,6 @@ class App extends Component {
   };
 
   render() {
-    const style = {
-      color: 'white',
-      backgroundColor: 'green',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
-
     let persons = null;
 
     if (this.state.showPersons) {
@@ -69,20 +75,27 @@ class App extends Component {
           })}
         </div>
       );
+    }
 
-      style.backgroundColor = 'red';
+    // Dynamically adding classes
+    const classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('blue');
     }
 
     return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <h4>The paragraph below is a functional component</h4>
-        <button
-          style={style}
-          onClick={this.togglePersonsHandler}>Toggle Persons
-        </button>
-        {persons}
-      </div>
+        <div className="App">
+          <h1>Hi, I'm a React App</h1>
+          <h4 className={classes.join(' ')}>This text is being dynamically stylized</h4>
+          <StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler}>
+            Toggle Persons
+          </StyledButton>
+          {persons}
+        </div>
     );
   }
 }
