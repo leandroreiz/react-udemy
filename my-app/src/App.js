@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import styled from 'styled-components';
 
-import classes from './App.modules.css';
+import classes from './App.module.css';
 import Person from './Person/Person';
 
 // const StyledButton = styled.button`
@@ -62,6 +62,7 @@ class App extends Component {
 
   render() {
     let persons = null;
+    const btnClasses = [classes.button];
 
     if (this.state.showPersons) {
       persons = (
@@ -76,23 +77,25 @@ class App extends Component {
           })}
         </div>
       );
+
+      btnClasses.push(classes.btnRed);
     }
 
     // Dynamically adding classes
     const assignedClasses = [];
 
     if (this.state.persons.length <= 2) {
-      assignedClasses.push('red');
+      assignedClasses.push(classes.red);
     }
     if (this.state.persons.length <= 1) {
-      assignedClasses.push('blue');
+      assignedClasses.push(classes.blue);
     }
 
     return (
-        <div className="App">
+        <div className={classes.App}>
           <h1>Hi, I'm a React App</h1>
           <h4 className={assignedClasses.join(' ')}>This text is being dynamically stylized</h4>
-          <button className={classes.button} onClick={this.togglePersonsHandler}>
+          <button className={btnClasses.join(' ')} onClick={this.togglePersonsHandler}>
             Toggle Persons
           </button>
           {persons}
