@@ -8,7 +8,7 @@ const person = (props) => {
   // if (rnd >= 0.7) {
   //   throw new Error('An error was caught!');
   // }
-
+  console.log('[Person.js] redering...')
   return (
     <div className={classes.Person}>
       <p onClick={props.clickMe}>I'm {props.name} and I'm {props.age} years old!</p>

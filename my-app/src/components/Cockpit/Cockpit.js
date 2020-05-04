@@ -1,9 +1,10 @@
 import React from 'react';
-import classes from './Cockpit.css';
+import classes from './Cockpit.module.css';
 
 const cockpit = (props) => {
 
   const btnClasses = [classes.button];
+
   if (props.showPersons) {
     btnClasses.push(classes.btnRed);
   }
@@ -20,9 +21,9 @@ const cockpit = (props) => {
 
   return (
     <div>
-      <h1>Hi, I'm a React App</h1>
+      <h1>{props.title}</h1>
       <h4 className={assignedClasses.join(' ')}>This text is being dynamically stylized</h4>
-      <button className={btnClasses.join(' ')} onClick={this.togglePersonsHandler}>
+      <button className={btnClasses.join(' ')} onClick={props.clickMe}>
         Toggle Persons
       </button>
 
