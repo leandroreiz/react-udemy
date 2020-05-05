@@ -4,7 +4,7 @@ import classes from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     console.log('[App.js] constructor');
@@ -29,6 +29,15 @@ class App extends Component {
     console.log('[App.js] componentDidMount');
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
+  }
+
   // receives the event and the id as parameters
   namechangeHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(person => person.id === id);
@@ -51,7 +60,7 @@ class App extends Component {
   };
 
   render() {
-    console.log('[App.js] reder');
+    console.log('[App.js] render');
     let persons = null;
 
     if (this.state.showPersons) {
@@ -73,5 +82,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

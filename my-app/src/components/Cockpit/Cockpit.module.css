@@ -7,24 +7,27 @@
 }
 
 .button {
-  color: white;
-  background-color: green;
+  color: black;
+  background-color: #f1cf0d;
   font: inherit;
-  border: 1px solid blue;
+  border: solid 1px;
   padding: 8px;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 8px 8px solid;
+  outline-style: none;
 }
 
 .button:hover {
-  background-color: lightgreen;
-  color: black;
+  background-color: black;
+  color: #f1cf0d;
 }
 
 .button.btnRed {
-  background-color: red;
+  background-color: rgb(255, 30, 0);
 }
 
 .button.btnRed:hover {
-  background-color: salmon;
+  background-color: black;
+  color: rgb(255, 30, 0);
 }

@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classes from './Cockpit.module.css';
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+  useEffect(() => {
+    console.log('[Cockpit.js] useEffect');
+    setTimeout(() => {
+      alert('[Cockpit.js] How to control the flow of useEffect');
+    } ,1000)
+  }, []);
 
-  const btnClasses = [classes.button];
-
-  if (props.showPersons) {
-    btnClasses.push(classes.btnRed);
-  }
+  useEffect(() => {
+    console.log('[Cockpit.js] 2nd useEffect');
+    return () => {
+      console.log('[Cockpit.js] Clean up 2nd useEffect');
+    }
+  });
 
   // Dynamically adding classes
   const assignedClasses = [];
@@ -17,6 +24,12 @@ const cockpit = (props) => {
   }
   if (props.persons.length <= 1) {
     assignedClasses.push(classes.blue);
+  }
+
+  const btnClasses = [classes.button];
+
+  if (props.showPersons) {
+    btnClasses.push(classes.btnRed);
   }
 
   return (
@@ -31,4 +44,4 @@ const cockpit = (props) => {
   );
 }
 
-export default cockpit;
+export default Cockpit;

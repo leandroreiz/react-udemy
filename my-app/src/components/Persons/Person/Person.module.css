@@ -1,8 +1,9 @@
 .Person {
     width: 60%;
     margin: 16px auto;
+    background-color: #212327;
     border: 1px solid #eee;
-    box-shadow: 0 2px 3px #ccc;
+    box-shadow: 0 8px 18px rgb(27, 26, 26);
     padding: 16px;
     text-align: center;
 }
