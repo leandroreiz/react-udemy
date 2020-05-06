@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import classes from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Auxiliar from '../hoc/Auxiliar';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     console.log('[App.js] constructor');
@@ -17,7 +19,8 @@ export default class App extends Component {
       { id: 3, name: 'Nina', age: 6 }
     ],
     otherState: 'some other value',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -59,26 +62,46 @@ export default class App extends Component {
     this.setState({ showPersons: !doesShow });
   };
 
+  toggleCockpitHandler = () => {
+    const doesShow = this.state.showCockpit;
+    this.setState({ showCockpit: !doesShow });
+  }
+
   render() {
     console.log('[App.js] render');
-    let persons = null;
 
+    let persons = null;
     if (this.state.showPersons) {
       persons = <Persons
-            persons={this.state.persons}
-            clickMe={this.deletePersonHandler}
-            changed={this.namechangeHandler} />;
+        persons={this.state.persons}
+        clickMe={this.deletePersonHandler}
+        changed={this.namechangeHandler} />;
+    }
+
+    let cockpit = null;
+    let btnMessage = '';
+    if (this.state.showCockpit) {
+      btnMessage = 'Hide Cockpit';
+      cockpit = <Cockpit
+        title={this.props.appTitle}
+        showPersons={this.state.showPersons}
+        personsLength={this.state.persons.length}
+        clickMe={this.togglePersonsHandler} />;
+    } else {
+      btnMessage = 'Show Cockpit';
     }
 
     return (
-        <div className={classes.App}>
-          <Cockpit
-            title={this.props.appTitle}
-            showPersons={this.state.showPersons}
-            persons={this.state.persons}
-            clickMe={this.togglePersonsHandler} />
+        <Auxiliar>
+          <button
+            className={classes.toggleCockpitBtn} 
+            onClick={this.toggleCockpitHandler}>{ btnMessage }
+          </button>
+          { (this.state.showCockpit) ? cockpit : null }
           {persons}
-        </div>
+        </Auxiliar>
     );
   }
 }
+
+export default withClass(App, classes.App);

@@ -19,10 +19,10 @@ const Cockpit = (props) => {
   // Dynamically adding classes
   const assignedClasses = [];
 
-  if (props.persons.length <= 2) {
+  if (props.personsLength <= 2) {
     assignedClasses.push(classes.red);
   }
-  if (props.persons.length <= 1) {
+  if (props.personsLength <= 1) {
     assignedClasses.push(classes.blue);
   }
 
@@ -44,4 +44,4 @@ const Cockpit = (props) => {
   );
 }
 
-export default Cockpit;
+export default React.memo(Cockpit);

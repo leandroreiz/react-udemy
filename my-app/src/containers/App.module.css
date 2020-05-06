@@ -20,3 +20,13 @@
   flex-grow: 5;
   margin-right: 10px;
 }
+
+.toggleCockpitBtn {
+  background-color: #282c34;
+  color: white;
+  border: solid 1px;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  outline-style: none;
+}
