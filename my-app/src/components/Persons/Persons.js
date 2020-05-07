@@ -45,6 +45,7 @@ class Persons extends PureComponent {
       return (
       <ErrorBoundary key={person.id}>
         <Person
+          isAuth={this.props.isAuthenticated}
           clickMe={this.props.clickMe.bind(this, index)}
           name={person.name}
           age={person.age}

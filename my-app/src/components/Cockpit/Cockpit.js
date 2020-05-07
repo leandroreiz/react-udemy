@@ -1,12 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import classes from './Cockpit.module.css';
+import AuthContext from '../../context/auth-context';
 
 const Cockpit = (props) => {
+  
+  const toggleBtnRef = useRef(null);
+  const authContext = useContext(AuthContext);
+
+  console.log(authContext.authenticated);
+
   useEffect(() => {
     console.log('[Cockpit.js] useEffect');
-    setTimeout(() => {
-      alert('[Cockpit.js] How to control the flow of useEffect');
-    } ,1000)
+    // setTimeout(() => {
+    //   alert('[Cockpit.js] How to control the flow of useEffect');
+    // } ,1000)
+    // toggleBtnRef.current.click();
   }, []);
 
   useEffect(() => {
@@ -34,12 +42,17 @@ const Cockpit = (props) => {
 
   return (
     <div>
-      <h1>{props.title}</h1>
-      <h4 className={assignedClasses.join(' ')}>This text is being dynamically stylized</h4>
-      <button className={btnClasses.join(' ')} onClick={props.clickMe}>
-        Toggle Persons
+      <h3>{props.title}</h3>
+      <h5 className={assignedClasses.join(' ')}>This text is being dynamically stylized</h5>
+      <button
+        ref={toggleBtnRef} 
+        className={btnClasses.join(' ')} 
+        onClick={props.clickMe}>Toggle Persons
       </button>
-
+      <button
+        className={classes.loginBtn}
+        onClick={authContext.login}>Log In
+      </button>
     </div>
   );
 }

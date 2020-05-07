@@ -5,6 +5,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Auxiliar from '../hoc/Auxiliar';
+import AuthContext from '../context/auth-context';
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +21,9 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    showCockpit: true
+    showCockpit: true,
+    changeCounter: 0,
+    authenticated: false
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -48,7 +51,12 @@ class App extends Component {
     person.name = event.target.value;
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({ persons: persons });
+    this.setState((prevState, props) => {
+      return {
+        persons: persons, 
+        changeCounter: prevState.changeCounter + 1
+      }
+    });
   }
 
   deletePersonHandler = (personIndex) => {
@@ -65,7 +73,11 @@ class App extends Component {
   toggleCockpitHandler = () => {
     const doesShow = this.state.showCockpit;
     this.setState({ showCockpit: !doesShow });
-  }
+  };
+
+  loginHandler = () => {
+    this.setState({ authenticated: true });
+  };
 
   render() {
     console.log('[App.js] render');
@@ -73,6 +85,7 @@ class App extends Component {
     let persons = null;
     if (this.state.showPersons) {
       persons = <Persons
+        isAuthenticated={this.state.authenticated}
         persons={this.state.persons}
         clickMe={this.deletePersonHandler}
         changed={this.namechangeHandler} />;
@@ -83,6 +96,7 @@ class App extends Component {
     if (this.state.showCockpit) {
       btnMessage = 'Hide Cockpit';
       cockpit = <Cockpit
+        login={this.loginHandler}
         title={this.props.appTitle}
         showPersons={this.state.showPersons}
         personsLength={this.state.persons.length}
@@ -97,8 +111,14 @@ class App extends Component {
             className={classes.toggleCockpitBtn} 
             onClick={this.toggleCockpitHandler}>{ btnMessage }
           </button>
-          { (this.state.showCockpit) ? cockpit : null }
-          {persons}
+          <AuthContext.Provider
+            value={{
+              authenticated: this.state.authenticated,
+              login: this.loginHandler
+            }}>
+            { (this.state.showCockpit) ? cockpit : null }
+            {persons}
+          </AuthContext.Provider>
         </Auxiliar>
     );
   }
