@@ -234,7 +234,7 @@ ReactDOM.render(
 );
 ```
 
-#### Let’s recap what happens in this example:
+#### Let’s recap what happens in this example
 
 1. We call ```ReactDOM.render()``` with the ```<Welcome name="Sara" />``` element.
 2. React calls the ```Welcome``` component with ```{name: 'Sara'}``` as the props.
@@ -493,7 +493,7 @@ class Clock extends React.Component {
 
 Clock is now defined as a class rather than a function.
 
-The render method will be called each time an update happens, but as long as we render <Clock /> into the same DOM node, only a single instance of the Clock class will be used. This lets us use additional features such as local state and lifecycle methods.
+The render method will be called each time an update happens, but as long as we render ```<Clock />``` into the same DOM node, only a single instance of the Clock class will be used. This lets us use additional features such as local state and lifecycle methods.
 
 ### Adding Local State to a Class
 
@@ -514,7 +514,7 @@ class Clock extends React.Component {
 }
 ```
 
-Add a class constructor that assigns the initial this.state:
+Add a class constructor that assigns the initial ```this.state```:
 
 ```javascript
 class Clock extends React.Component {
@@ -545,7 +545,7 @@ constructor(props) {
 
 Class components should always call the base constructor with props.
 
-Remove the date prop from the <Clock /> element:
+Remove the date prop from the ```<Clock />``` element:
 
 ```javascript
 ReactDOM.render(
@@ -580,3 +580,118 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+Next, we’ll make the Clock set up its own timer and update itself every second.
+
+### Adding Lifecycle Methods to a Class
+
+In applications with many components, it’s very important to free up resources taken by the components when they are destroyed.
+
+We want to set up a timer whenever the Clock is rendered to the DOM for the first time. This is called “mounting” in React.
+
+We also want to clear that timer whenever the DOM produced by the Clock is removed. This is called “unmounting” in React.
+
+We can declare special methods on the component class to run some code when a component mounts and unmounts:
+
+```javascript
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+
+These methods are called “lifecycle methods”.
+
+The ```componentDidMount()``` method runs after the component output has been rendered to the DOM. This is a good place to set up a timer:
+
+```javascript
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+```
+
+Note how we save the timer ID right on ```this (this.timerID)```.
+
+While ```this.props``` is set up by React itself and ```this.state``` has a special meaning, you are free to add additional fields to the class manually if you need to store something that doesn’t participate in the data flow (like a timer ID).
+
+We will tear down the timer in the ```componentWillUnmount()``` lifecycle method:
+
+```javascript
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+```
+
+Finally, we will implement a method called ```tick()``` that the Clock component will run every second.
+
+It will use ```this.setState()``` to schedule updates to the component local state:
+
+```javascript
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+Now the clock ticks every second.
+
+Let’s quickly recap what’s going on and the order in which the methods are called:
+
+1. When ```<Clock />``` is passed to ```ReactDOM.render()```, React calls the constructor of the ```Clock``` component. Since ```Clock``` needs to display the current time, it initializes ```this.state``` with an object including the current time. We will later update this state.
+2. React then calls the ```Clock``` component’s ```render()``` method. This is how React learns what should be displayed on the screen. React then updates the DOM to match the Clock’s render output.
+3. When the ```Clock``` output is inserted in the DOM, React calls the ```componentDidMount()``` lifecycle method. Inside it, the ```Clock``` component asks the browser to set up a timer to call the component’s ```tick()``` method once a second.
+4. Every second the browser calls the ```tick()``` method. Inside it, the Clock component schedules a UI update by calling ```setState()``` with an object containing the current time. Thanks to the ```setState()``` call, React knows the state has changed, and calls the ```render()``` method again to learn what should be on the screen. This time, ```this.state.date``` in the ```render()``` method will be different, and so the render output will include the updated time. React updates the DOM accordingly.
+5. If the ```Clock``` component is ever removed from the DOM, React calls the ```componentWillUnmount()``` lifecycle method so the timer is stopped.
