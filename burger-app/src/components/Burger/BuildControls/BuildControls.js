@@ -12,8 +12,11 @@ const controls = [
 
 const buildControls = (props) => (
     <div className={style.BuildControls}>
-        {controls.map((control) => (
-            <BuildControl key={control.type} label={control.label}/>
+        {controls.map((control) => ( // Look at: why forEach doesn't work here???
+            <BuildControl
+                key={control.label}
+                label={control.label}
+                added={() => props.ingredientAdded(control.type)} />
         ))}
     </div>
 );
