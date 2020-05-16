@@ -1,0 +1,74 @@
+.HamburgerMenu {
+  padding: 15px 15px;
+  display: inline-block;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  color: white;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+.HamburgerMenu:hover {
+  opacity: 0.7;
+}
+
+.HamburgerMenu.isActive:hover {
+  opacity: 0.7;
+}
+
+.HamburgerMenu.isActive .HamburgerMenuInner,
+.HamburgerMenu.isActive .HamburgerMenuInner::before,
+.HamburgerMenu.isActive .HamburgerMenuInner::after {
+  background-color: #000;
+}
+
+.HamburgerMenuBox {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+.HamburgerMenuInner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+}
+
+.HamburgerMenuInner, 
+.HamburgerMenuInner::before, 
+.HamburgerMenuInner::after {
+  width: 40px;
+  height: 4px;
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.HamburgerMenuInner::before, .HamburgerMenuInner::after {
+  content: "";
+  display: block;
+}
+
+.HamburgerMenuInner::before {
+  top: -10px;
+}
+
+.HamburgerMenuInner::after {
+  bottom: -10px;
+}
+
+@media (min-width: 500px) {
+  .HamburgerMenu {
+    display: none;
+  }
+}
