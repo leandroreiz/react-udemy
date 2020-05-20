@@ -4,6 +4,7 @@
     padding: 0;
     width: 100%;
     text-align: center;
+    background-color: rgb(35, 42, 59);
 }
 
 .Blog li {
@@ -13,7 +14,7 @@
 
 .Blog a {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 .Blog a:hover,

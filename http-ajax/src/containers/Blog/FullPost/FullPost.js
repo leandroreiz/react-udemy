@@ -7,16 +7,25 @@ import './FullPost.css';
 class FullPost extends Component {
 
     state = {
-        loadedPost: null
+        loadedPost: null,
+        error: false
     }
 
     componentDidMount() {
-        console.log(this.props);
+        this.loadData();
+    }
+
+    componentDidUpdate() {
+        this.loadData();
+    }
+
+    loadData() {
         if (this.props.match.params.id) {
-            if (!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.match.params.id)) {
+            if (!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== +this.props.match.params.id)) {
                 axios
                     .get(`/posts/${this.props.match.params.id}`)
-                    .then(response => this.setState({ loadedPost: response.data }));
+                    .then(response => this.setState({ loadedPost: response.data }))
+                    .catch(error => this.setState({ error: true }));
             }
         }
     }
@@ -28,10 +37,7 @@ class FullPost extends Component {
     }
 
     render () {
-        let post = null;
-        if (this.props.match.params.id) {
-            post = <Spinner />;
-        }
+    let post = this.state.loadedPost ? <Spinner /> : null;
 
         if (this.state.loadedPost) {
             post = (

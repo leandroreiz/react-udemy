@@ -6,10 +6,9 @@ import registerServiceWorker from './registerServiceWorker';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
-axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
+//axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
 
 axios.interceptors.request.use(requestConfig => {
-    console.log(requestConfig);
     return requestConfig;
 }, error => {
     console.log(error);
@@ -17,7 +16,6 @@ axios.interceptors.request.use(requestConfig => {
 });
 
 axios.interceptors.response.use(response => {
-    console.log(response);
     return response;
 }, error => {
     console.log(error);
