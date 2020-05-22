@@ -7,9 +7,15 @@
 }
 
 .Course {
-    border: 1px solid #eee;
+    color: #000;
+    border: 1px solid #000;
     box-shadow: 0 2px 3px #ccc;
+    border-radius: 3px;
     padding: 10px;
     margin: 10px;
     cursor: pointer;
+}
+
+.Course:hover {
+    background: #fad83f;
 }
