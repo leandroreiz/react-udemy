@@ -7,6 +7,7 @@ const initialState = {
 }
 
 // Reducer
+// the reducer function receives 2 parameters. The STATE and the ACTION params.
 const rootReducer = (state = initialState, action) => {
     if (action.type === 'INC_COUNTER') {
         return {
@@ -26,6 +27,7 @@ const rootReducer = (state = initialState, action) => {
 };
 
 // Store
+// the parameter passed here needs to be the reducer function created above
 const store = createStore(rootReducer);
 console.log(store.getState());
 
