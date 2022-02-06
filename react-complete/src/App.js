@@ -6,27 +6,39 @@ import NewExpense from "./components/NewExpense/NewExpense";
 const DUMMY_EXPENSES = [
   {
     id: "e1",
-    title: "Toilet Paper",
-    amount: 94.12,
-    date: new Date(2020, 7, 14),
+    title: "Marshall Origin 20H",
+    amount: 398.0,
+    date: new Date(2023, 10, 29),
   },
   {
     id: "e2",
-    title: "New TV",
-    amount: 799.49,
-    date: new Date(2021, 2, 12),
+    title: "Ibanez Prestige Black & Gold",
+    amount: 2199.49,
+    date: new Date(2022, 10, 29),
   },
   {
     id: "e3",
-    title: "Car Insurance",
-    amount: 294.67,
-    date: new Date(2021, 2, 28),
+    title: "Ampero Stomp II",
+    amount: 499,
+    date: new Date(2022, 2, 12),
   },
   {
-    id: "e4",
-    title: "New Desk (Wooden)",
-    amount: 450,
-    date: new Date(2021, 5, 12),
+    id: "W7143002",
+    title: "PRS SE Custom 24 Floyd Charcoal Burst",
+    amount: 1115.29,
+    date: new Date(2021, 7, 20),
+  },
+  {
+    id: "W7097991",
+    title: "Guitar Tuner, Capo, Strap and Picks",
+    amount: 107.96,
+    date: new Date(2021, 7, 6),
+  },
+  {
+    id: "M7091217",
+    title: "Jackson DKA-R EX Snow White",
+    amount: 750.1,
+    date: new Date(2021, 6, 20),
   },
 ];
 

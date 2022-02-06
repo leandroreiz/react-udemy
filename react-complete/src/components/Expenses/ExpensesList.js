@@ -4,7 +4,11 @@ import ExpenseItem from "./ExpenseItem";
 
 const ExpensesList = (props) => {
   if (props.listData.length === 0) {
-    return <h2 className="expenses-list__fallback">Found no expenses!</h2>;
+    return (
+      <h2 className="expenses-list__fallback">
+        Found no expenses in {props.selectedYear}!
+      </h2>
+    );
   }
 
   return (
