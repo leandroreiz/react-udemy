@@ -1,3 +1,4 @@
+// ExpenseForm.js
 import { useState } from "react";
 import "./ExpenseForm.css";
 
@@ -6,42 +7,16 @@ const ExpenseForm = (props) => {
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
 
-  // const [userInput, setUserInput] = useState({
-  //   enteredTitle: "",
-  //   enteredAmount: "",
-  //   enteredDate: "",
-  // });
-
   const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
-
-    // setUserInput({
-    //   ...userInput,
-    //   enteredTitle: event.target.value,
-    // });
-
-    // If you depend in a previous state you should use this method
-    // setUserInput((prevState) => {
-    //   return { ...prevState, enteredTitle: event.target.value };
-    // });
   };
 
   const amountChangeHandler = (event) => {
     setEnteredAmount(event.target.value);
-
-    // setUserInput({
-    //   ...userInput,
-    //   enteredAmount: event.target.value,
-    // });
   };
 
   const dateChangeHandler = (event) => {
     setEnteredDate(event.target.value);
-
-    // setUserInput({
-    //   ...userInput,
-    //   enteredDate: event.target.value,
-    // });
   };
 
   const submitHandler = (event) => {
@@ -59,11 +34,8 @@ const ExpenseForm = (props) => {
     setEnteredAmount("");
     setEnteredDate("");
 
-    // console.log(
-    //   userInput.enteredTitle,
-    //   userInput.enteredAmount,
-    //   userInput.enteredDate
-    // );
+    // Closes the panel to add new expenses
+    props.onCancel();
   };
 
   return (
@@ -99,6 +71,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button type="cancel">Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
