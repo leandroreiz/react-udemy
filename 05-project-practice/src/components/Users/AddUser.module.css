@@ -1,0 +1,27 @@
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form button {
+  margin: 10px 20px;
+}
+
+.label {
+  margin: 10px 20px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.input {
+  font-size: 18px;
+  width: 50vw;
+  margin: 0 20px;
+  border-color: #282c34;
+  border-radius: 5px;
+  outline: none;
+}
+
+.input:focus {
+  background-color: #e5ebf7;
+}

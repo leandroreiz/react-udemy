@@ -1,0 +1,43 @@
+.custom-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-items {
+  font-size: 22px;
+  margin: 10px 20px;
+  width: (100% - 40px);
+  border-color: #282c34;
+  border-radius: 5px;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-items button {
+  border: none;
+  align-self: center;
+  background-color: #282c34;
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.list-items button:hover {
+  background-color: rgb(156, 53, 53);
+}
+
+.list-items button:active {
+  transform: translateY(2px);
+}

@@ -1,0 +1,9 @@
+.card {
+  margin: 30px;
+  font-family: inherit;
+  background-color: #fff;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
