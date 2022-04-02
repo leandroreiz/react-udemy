@@ -3,8 +3,9 @@ import AuthContext from '../../store/auth-context';
 
 import classes from './AuthForm.module.css';
 
+export const API_KEY = `AIzaSyA8CsI50YUz4-Cgv9q76EizA_LwC9ecbhc`;
+
 const AuthForm = () => {
-  const API_KEY = `AIzaSyA8CsI50YUz4-Cgv9q76EizA_LwC9ecbhc`;
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
