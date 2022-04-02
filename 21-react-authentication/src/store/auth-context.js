@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+let logoutTimer;
 
 const AuthContext = React.createContext({
   token: '',
@@ -7,18 +9,64 @@ const AuthContext = React.createContext({
   logout: () => {},
 });
 
+const calculateRemainingTime = (expirationTime) => {
+  const currentTime = new Date().getTime();
+  const adjExpirationTime = new Date(expirationTime).getTime();
+
+  const remainingDuration = adjExpirationTime - currentTime;
+
+  return remainingDuration;
+};
+
+const getStoredToken = () => {
+  const storedToken = localStorage.getItem('token');
+  const storedExpirationTime = localStorage.getItem('expirationTime');
+
+  const remainingTime = calculateRemainingTime(storedExpirationTime);
+
+  if (remainingTime <= 60000) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationTime');
+    return null;
+  }
+
+  return {
+    token: storedToken,
+    duration: remainingTime,
+  };
+};
+
 export const AuthContextProvider = (props) => {
-  const [token, setToken] = useState(null);
+  const tokenData = getStoredToken();
+
+  let initToken;
+  if (tokenData) initToken = tokenData.token;
+
+  const [token, setToken] = useState(initToken);
 
   const userIsLoggedIn = !!token;
 
-  const loginHandler = (token) => {
+  const logoutHandler = useCallback(() => {
+    setToken(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationTime');
+
+    if (logoutTimer) clearTimeout(logoutTimer);
+  }, []);
+
+  const loginHandler = (token, expirationTime) => {
     setToken(token);
+    localStorage.setItem('token', token);
+    localStorage.setItem('expirationTime', expirationTime);
+
+    const remaingTime = calculateRemainingTime(expirationTime);
+
+    logoutTimer = setTimeout(logoutHandler, remaingTime);
   };
 
-  const logoutHandler = () => {
-    setToken(null);
-  };
+  useEffect(() => {
+    if (tokenData) logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+  }, [tokenData]);
 
   const contextValue = {
     token: token,
