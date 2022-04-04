@@ -1,24 +1,6 @@
+import { MongoClient } from 'mongodb';
+
 import MeetupList from '../components/meetups/MeetupList';
-
-const DUMMY_MEETUPS = [
-  {
-    id: 'm1',
-    title: 'Guitar workshop',
-    image:
-      'https://images.unsplash.com/photo-1444623151656-030273ddb785?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-    address: '10 Watermill Road, Raheny, Dublin',
-    description: 'A workshop for rock guitarists.',
-  },
-
-  {
-    id: 'm2',
-    title: 'Sport Cars Exhibition',
-    image:
-      'https://images.unsplash.com/photo-1558333924-237d26071691?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1235&q=80',
-    address: '9 Clontarf Windmill, Clontarf, Dublin',
-    description: 'Only sport cars allowed!',
-  },
-];
 
 const HomePage = (props) => {
   return <MeetupList meetups={props.meetups} />;
@@ -26,23 +8,29 @@ const HomePage = (props) => {
 
 export const getStaticProps = async () => {
   // fetch data from an API
+  const client = await MongoClient.connect(
+    'mongodb+srv://leandroreis:pFbj4SsLTXEFC2vh@cluster0.a14uh.mongodb.net/meetups?retryWrites=true&w=majority'
+  );
+
+  const db = client.db();
+
+  const meetupsColletion = db.collection('meetups');
+
+  const meetups = await meetupsColletion.find().toArray();
+
+  client.close();
+
   return {
     props: {
-      meetups: DUMMY_MEETUPS,
+      meetups: meetups.map((meetup) => ({
+        title: meetup.title,
+        address: meetup.address,
+        image: meetup.image,
+        id: meetup._id.toString(),
+      })),
     },
     revalidate: 10,
   };
 };
-
-// export const getServerSideProps = (context) => {
-//   const req = context.req;
-//   const res = context.res;
-//   // fetch data from an API
-//   return {
-//     props: {
-//       meetups: DUMMY_MEETUPS,
-//     },
-//   };
-// };
 
 export default HomePage;
