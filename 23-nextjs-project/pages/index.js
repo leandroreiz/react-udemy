@@ -1,9 +1,22 @@
+import Head from 'next/head';
 import { MongoClient } from 'mongodb';
 
 import MeetupList from '../components/meetups/MeetupList';
+import { Fragment } from 'react';
 
 const HomePage = (props) => {
-  return <MeetupList meetups={props.meetups} />;
+  return (
+    <Fragment>
+      <Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list of highly active meetups!"
+        />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </Fragment>
+  );
 };
 
 export const getStaticProps = async () => {
@@ -14,9 +27,9 @@ export const getStaticProps = async () => {
 
   const db = client.db();
 
-  const meetupsColletion = db.collection('meetups');
+  const meetupsCollection = db.collection('meetups');
 
-  const meetups = await meetupsColletion.find().toArray();
+  const meetups = await meetupsCollection.find().toArray();
 
   client.close();
 

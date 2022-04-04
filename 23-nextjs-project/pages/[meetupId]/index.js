@@ -1,31 +1,46 @@
+import { MongoClient, ObjectId } from 'mongodb';
+import { Fragment } from 'react';
+
+import Head from 'next/head';
 import MeetupDetail from '../../components/meetups/MeetupDetail';
 
 const MeetupDetails = (props) => {
+  const { image, title, address, description } = props.meetupData;
+
   return (
-    <MeetupDetail
-      image="https://images.unsplash.com/photo-1444623151656-030273ddb785?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-      title="Guitar workshop"
-      address="10 Watermill Road, Raheny, Dublin"
-      description="A workshop for rock guitarists."
-    />
+    <Fragment>
+      <Head>
+        <title>Meetup: {title}</title>
+        <meta name="description" content={description} />
+      </Head>
+      <MeetupDetail
+        image={image}
+        title={title}
+        address={address}
+        description={description}
+      />
+    </Fragment>
   );
 };
 
 export const getStaticPaths = async () => {
+  const client = await MongoClient.connect(
+    'mongodb+srv://leandroreis:pFbj4SsLTXEFC2vh@cluster0.a14uh.mongodb.net/meetups?retryWrites=true&w=majority'
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection('meetups');
+
+  const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
     fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: 'm1',
-        },
-      },
-      {
-        params: {
-          meetupId: 'm2',
-        },
-      },
-    ],
+    paths: meetups.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
   };
 };
 
@@ -33,15 +48,28 @@ export const getStaticProps = async (context) => {
   // fetch data for a single meetup
   const meetupId = context.params.meetupId;
 
+  const client = await MongoClient.connect(
+    'mongodb+srv://leandroreis:pFbj4SsLTXEFC2vh@cluster0.a14uh.mongodb.net/meetups?retryWrites=true&w=majority'
+  );
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection('meetups');
+
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  client.close();
+
   return {
     props: {
       meetupData: {
-        id: meetupId,
-        image:
-          'https://images.unsplash.com/photo-1444623151656-030273ddb785?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-        title: 'Guitar workshop',
-        address: '10 Watermill Road, Raheny, Dublin',
-        description: 'A workshop for rock guitarists.',
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        image: selectedMeetup.image,
+        description: selectedMeetup.description,
       },
     },
   };
